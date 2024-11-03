@@ -57,7 +57,7 @@ export const detectAndConfirmContractType = async (
 
 export const analyzeContract = async (req: Request, res: Response) => {
   const user = req.user as IUser;
-  const { contractType } = req.body;
+  const { contractType, contractName } = req.body;
 
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
@@ -75,7 +75,7 @@ export const analyzeContract = async (req: Request, res: Response) => {
     const pdfText = await extractTextFromPDF(fileKey);
     let analysis;
 
-    if (user.isPremium) {
+    if (user.isPremium || true) { // TODO remove to enable premium
       analysis = await analyzeContractWithAI(pdfText, "premium", contractType);
     } else {
       analysis = await analyzeContractWithAI(pdfText, "free", contractType);
@@ -89,6 +89,7 @@ export const analyzeContract = async (req: Request, res: Response) => {
       userId: user._id,
       contractText: pdfText,
       contractType,
+      contractName,
       ...(analysis as Partial<IContractAnalysis>),
       language: "en",
       aiModel: "gemini-pro",

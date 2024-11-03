@@ -79,6 +79,7 @@ export function UploadModal({
       const formData = new FormData();
       formData.append("contract", file);
       formData.append("contractType", contractType);
+      formData.append("contractName", file.name.replace(".pdf", ""));
 
       const response = await api.post(`/contracts/analyze`, formData, {
         headers: {

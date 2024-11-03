@@ -67,12 +67,12 @@ export default function UserContracts() {
 
   const columns: ColumnDef<ContractAnalysis>[] = [
     {
-      accessorKey: "_id",
+      accessorKey: "contractName",
       header: ({ column }) => {
-        return <Button variant={"ghost"}>Contract ID</Button>;
+        return <Button variant={"ghost"}>Contract Name</Button>;
       },
       cell: ({ row }) => (
-        <div className="font-medium">{row.getValue<string>("_id")}</div>
+        <div className="font-medium">{row.getValue<string>("contractName")}</div>
       ),
     },
     {
@@ -171,9 +171,9 @@ export default function UserContracts() {
   const averageScore =
     totalContracts > 0
       ? (contracts?.reduce(
-          (sum, contract) => sum + (contract.overallScore ?? 0),
-          0
-        ) ?? 0) / totalContracts
+        (sum, contract) => sum + (contract.overallScore ?? 0),
+        0
+      ) ?? 0) / totalContracts
       : 0;
 
   const highRiskContracts =
@@ -232,9 +232,9 @@ export default function UserContracts() {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}

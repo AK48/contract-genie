@@ -65,8 +65,8 @@ export function HeroSection() {
           Introducing Simple Metrics for your team
         </Link>
         <div className="text-center mb-12 w-full">
-          <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary mb-4">
-            Revoltionzie Your Contracts
+          <h1 className="text-4xl font-extrabold pb-2 tracking-tight sm:text-5xl xl:text-6xl/none bg-clip-text text-transparent bg-gradient-to-r from-[#763fc8] to-[#b777f3] mb-6">
+            Revolutionize Your Contract Management With AI
           </h1>
           <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
             Harness the power of AI to analyze, understand, and optimize your
@@ -74,7 +74,7 @@ export function HeroSection() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Button
-              className="inline-flex items-center justify-center text-lg"
+              className="inline-flex items-center justify-center text-lg bg-[#763fc8] hover:bg-[#763fc8]/90"
               size={"lg"}
             >
               Get Started
@@ -94,8 +94,8 @@ export function HeroSection() {
             {features.map((feature) => (
               <Card key={feature.title} className="h-full">
                 <CardContent className="p-6 flex flex-col items-center text-center">
-                  <div className="size-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                    <feature.icon className="text-primary" />
+                  <div className="size-12 rounded-full bg-[#a855f7]/10 flex items-center justify-center mb-4">
+                    <feature.icon className="text-[#763fc8]" />
                   </div>
                   <h3 className="text-lg font-semibold mb-2">
                     {feature.title}

@@ -2,7 +2,7 @@ import redis from "../config/redis";
 import { getDocument } from "pdfjs-dist";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const AI_MODEL = "gemini-pro";
+const AI_MODEL = "gemini-1.5-pro";
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 const aiModel = genAI.getGenerativeModel({ model: AI_MODEL });
 
@@ -67,6 +67,9 @@ export const analyzeContractWithAI = async (
   contractType: string
 ) => {
   let prompt;
+
+  tier = "premium"; // TODO remove to enable premium
+
   if (tier === "premium") {
     prompt = `
     Analyze the following ${contractType} contract and provide:
@@ -132,16 +135,19 @@ export const analyzeContractWithAI = async (
   const results = await aiModel.generateContent(prompt);
   const response = await results.response;
   let text = response.text();
+  console.log(text);
+  console.log("/n/n/n***************************************/n/n/n");
 
   // remove any markdown formatting
   text = text.replace(/```json\n?|\n?```/g, "").trim();
 
   try {
     // Attempt to fix common JSON errors
-    text = text.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3'); // Ensure all keys are quoted
-    text = text.replace(/:\s*"([^"]*)"([^,}\]])/g, ': "$1"$2'); // Ensure all string values are properly quoted
-    text = text.replace(/,\s*}/g, "}"); // Remove trailing commas
+    //text = text.replace(/([{,]\s*)(\w+)(\s*:)/g, '$1"$2"$3'); // Ensure all keys are quoted
+    //text = text.replace(/:\s*"([^"]*)"([^,}\]])/g, ': "$1"$2'); // Ensure all string values are properly quoted
+    //text = text.replace(/,\s*}/g, "}"); // Remove trailing commas
 
+    console.log(text);
     const analysis = JSON.parse(text);
     return analysis;
   } catch (error) {

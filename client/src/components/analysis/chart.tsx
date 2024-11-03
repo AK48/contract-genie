@@ -52,24 +52,28 @@ export default function OverallScoreChart({
     <div className="w-full h-48">
       <ChartContainer
         config={chartConfig}
-        className="mx-auto aspect-square max-h-[250px]"
+        className="mx-auto aspect-square max-h-[225px]"
       >
         <PieChart>
-          <ChartTooltip cursor content={<ChartTooltipContent />} />
+          <ChartTooltip cursor content={<ChartTooltipContent hideLabel />} />
           <Pie
             data={pieChartData}
             dataKey="value"
             nameKey="name"
             innerRadius={60}
-            paddingAngle={5}
+            outerRadius={90}
+            paddingAngle={2}
           >
             <Label
               content={({ viewBox }) => {
                 if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                   return (
-                    <text>
+                    <text x={viewBox.cx}
+                      y={viewBox.cy}
+                      textAnchor="middle"
+                      className="text-base">
                       <tspan>{overallScore}%</tspan>
-                      <tspan>Score</tspan>
+                      <tspan>&nbsp;Score</tspan>
                     </text>
                   );
                 }

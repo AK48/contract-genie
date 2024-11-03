@@ -21,6 +21,7 @@ interface CompensationStructure {
 
 export interface ContractAnalysis {
   userId: string;
+  contractName: string;
   contractText: string;
   risks: Risk[];
   opportunities: Opportunity[];

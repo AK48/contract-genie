@@ -5,10 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "./ui/button";
 import { UserButton } from "./shared/user-button";
+import Image from "next/image";
+import ContractGenieLogo from "@/images/ContractGenieLogo.png";
 
 const navItems: { name: string; href: string }[] = [
   { name: "Dashboard", href: "/dashboard" },
-  { name: "Pricing", href: "/pricing" },
   { name: "Privacy Policy", href: "/privacy" },
 ];
 
@@ -20,7 +21,13 @@ export function Header() {
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href={"/"} className="mr-6 flex items-center space-x-2">
-            LOGO
+            <Image
+              src={ContractGenieLogo}
+              alt="Contract Genie Logo"
+              width={150}
+              height={40}
+              priority
+            />
           </Link>
           <nav className="flex items-center space-x-7 text-sm font-medium">
             {navItems.map((item) => (

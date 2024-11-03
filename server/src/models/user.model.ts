@@ -13,7 +13,7 @@ const UserSchema: Schema = new Schema({
   email: { type: String, required: true, unique: true },
   displayName: { type: String, required: true },
   profilePicture: { type: String },
-  isPremium: { type: Boolean, default: false },
+  isPremium: { type: Boolean, default: true }, //TODO: change to false to enable premium
 });
 
 export default model<IUser>("User", UserSchema);

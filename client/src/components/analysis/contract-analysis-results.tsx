@@ -13,8 +13,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { motion } from "framer-motion";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { Accordion, AccordionItem, AccordionTrigger } from "../ui/accordion";
-import { AccordionContent } from "@radix-ui/react-accordion";
 
 interface IContractAnalysisResultsProps {
   analysisResults: ContractAnalysis;
@@ -59,11 +57,11 @@ export default function ContractAnalysisResults({
   const getImpactColor = (impact: string) => {
     switch (impact) {
       case "high":
-        return "bg-red-100 text-red-800";
+        return "bg-blue-100 text-blue-800";
       case "medium":
         return "bg-yellow-100 text-yellow-800";
       case "low":
-        return "bg-green-100 text-green-800";
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -77,7 +75,18 @@ export default function ContractAnalysisResults({
     }>,
     type: "risks" | "opportunities"
   ) => {
-    const displayItems = isActive ? items : items.slice(0, 3);
+    const sortedItems = [...items].sort((a, b) => {
+      const severityOrder = { high: 3, medium: 2, low: 1 };
+      const aValue = type === "risks"
+        ? severityOrder[a.severity as keyof typeof severityOrder] || 0
+        : severityOrder[a.impact as keyof typeof severityOrder] || 0;
+      const bValue = type === "risks"
+        ? severityOrder[b.severity as keyof typeof severityOrder] || 0
+        : severityOrder[b.impact as keyof typeof severityOrder] || 0;
+      return bValue - aValue; // Sort in descending order
+    });
+
+    const displayItems = isActive ? sortedItems : sortedItems.slice(0, 3);
     const fakeItems = {
       risk: type === "risks" ? "Hidden Risk" : undefined,
       opportunity: type === "opportunities" ? "Hidden Opportunity" : undefined,
@@ -158,7 +167,10 @@ export default function ContractAnalysisResults({
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Analysis Results</h1>
+        <div>
+          <h1 className="text-3xl font-bold">{analysisResults.contractName}</h1>
+          <p className="text-gray-500 mt-1">Contract Analysis Results</p>
+        </div>
         <div className="flex space-x-2">{/* ASK AI BUTTON */}</div>
       </div>
 
@@ -317,34 +329,28 @@ export default function ContractAnalysisResults({
         </TabsContent>
       </Tabs>
 
-      <Accordion type="single" collapsible className="mb-6">
-        {renderPremiumAccordition(
-          <>
-            <AccordionItem value="contract-details">
-              <AccordionTrigger>Contract Details</AccordionTrigger>
-              <AccordionContent>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <h3 className="font-semibold mb-2">
-                      Duration and Termination
-                    </h3>
-                    <p>{analysisResults.contractDuration}</p>
-                    <strong>Termination Conditions</strong>
-                    <p>{analysisResults.terminationConditions}</p>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold mb-2">Legal Informatiob</h3>
-                    <p>
-                      <strong>Legal Compliance</strong>
-                      {analysisResults.legalCompliance}
-                    </p>
-                  </div>
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </>
-        )}
-      </Accordion>
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle>Contract Details</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {renderPremiumAccordition(
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="font-semibold text-lg mb-2">Duration and Termination</h3>
+                <p className="mb-4">{analysisResults.contractDuration}</p>
+                <h4 className="font-semibold mb-2">Termination Conditions</h4>
+                <p>{analysisResults.terminationConditions}</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-lg mb-2">Legal Information</h3>
+                <h4 className="font-semibold mb-2">Legal Compliance</h4>
+                <p>{analysisResults.legalCompliance}</p>
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
