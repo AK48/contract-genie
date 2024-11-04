@@ -17,6 +17,10 @@ router.get(
 );
 
 router.get("/current-user", (req, res) => {
+  console.log('Auth status:', req.isAuthenticated());
+  console.log('Session:', req.session);
+  console.log('User:', req.user);
+
   if (req.isAuthenticated()) {
     res.json(req.user);
   } else {
